@@ -11,6 +11,7 @@ export async function callMsGraph() {
         ...loginRequest,
         account: account
     });
+    console.log("response ", response)
 
     const headers = new Headers();
     const bearer = `Bearer ${response.accessToken}`;

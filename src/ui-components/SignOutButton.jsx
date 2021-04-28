@@ -3,6 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Link as RouterLink } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 
 export const SignOutButton = () => {
@@ -44,6 +45,7 @@ export const SignOutButton = () => {
                 open={open}
                 onClose={() => setAnchorEl(null)}
             >
+            <MenuItem component={RouterLink} to="/profile" variant="contained" color="primary">View Profile</MenuItem>
                 <MenuItem onClick={() => handleLogout("popup")} key="logoutPopup">Logout using Popup</MenuItem>
                 <MenuItem onClick={() => handleLogout("redirect")} key="logoutRedirect">Logout using Redirect</MenuItem>
             </Menu>
