@@ -20,7 +20,7 @@ const ProfileContent = () => {
 
     useEffect(() => {
         if (!graphData && inProgress === InteractionStatus.None) {
-            callMsGraph().then(response => setGraphData(response));
+            callMsGraph("me").then(response => setGraphData(response));
         }
     }, [inProgress, graphData]);
   

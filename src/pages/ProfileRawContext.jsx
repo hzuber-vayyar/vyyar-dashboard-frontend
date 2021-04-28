@@ -33,7 +33,7 @@ class ProfileContent extends Component {
 
     componentDidMount() {
         if (!this.state.graphData && this.context.inProgress === InteractionStatus.None) {
-            callMsGraph().then(response => this.setState({graphData: response}));
+            callMsGraph("me").then(response => this.setState({graphData: response}));
         }
     }
   
