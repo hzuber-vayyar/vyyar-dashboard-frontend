@@ -65,5 +65,5 @@ export const loginRequest = {
 export const graphConfig = {
   graphMeEndpoint: "https://graph.microsoft.com/v1.0/me/",
   graphEndpoint: process.env.REACT_APP_GRAPH_AUTHORITY,
-  managementEndpoint: process.env.REACT_APP_MANAGEMENT_AUTH,
+  managementEndpoint: "https://management.azure.com",
 };
