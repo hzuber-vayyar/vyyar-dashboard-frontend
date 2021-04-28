@@ -1,67 +1,54 @@
-import React, { Component } from "react";
-import { getAllUsers, createUser } from "./services/UserService";
-import "./App.css";
-import Home from "./pages/home";
-import Page1 from "./pages/page1";
-import Page2 from "./pages/page2";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
+// Material-UI imports
+import Grid from "@material-ui/core/Grid";
 
-class App extends Component {
-  state = {
-    user: {},
-    users: [],
-    numberOfUsers: 0,
-  };
+// MSAL imports
+import { MsalProvider } from "@azure/msal-react";
+import { CustomNavigationClient } from "./utils/NavigationClient";
 
-  createUser = (e) => {
-    console.log(this.state.user);
-    createUser(this.state.user).then((response) => {
-      console.log(response);
-      this.setState({ numberOfUsers: this.state.numberOfUsers + 1 });
-    });
-  };
+// Sample app imports
+import { PageLayout } from "./ui-components/PageLayout";
+import { Home } from "./pages/Home";
+import { Profile } from "./pages/Profile";
 
-  getAllUsers = () => {
-    getAllUsers().then((users) => {
-      console.log(users);
-      this.setState({ users: users, numberOfUsers: users.length });
-    });
-  };
+// Class-based equivalents of "Profile" component
+import { ProfileWithMsal } from "./pages/ProfileWithMsal";
+import { ProfileRawContext } from "./pages/ProfileRawContext";
 
-  onChangeForm = (e) => {
-    let user = this.state.user;
-    if (e.target.name === "firstname") {
-      user.firstName = e.target.value;
-    } else if (e.target.name === "lastname") {
-      user.lastName = e.target.value;
-    } else if (e.target.name === "email") {
-      user.email = e.target.value;
-    }
-    this.setState({ user });
-  };
+function App({ pca }) {
+  // The next 3 lines are optional. This is how you configure MSAL to take advantage of the router's navigate functions when MSAL redirects between pages in your app
+  const history = useHistory();
+  const navigationClient = new CustomNavigationClient(history);
+  pca.setNavigationClient(navigationClient);
 
-  render() {
-    return (
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Home
-              state={this.state}
-              changeForm={() => this.onChangeForm()}
-              getUsers={() => this.getAllUsers()}
-              createUser={() => this.createUser()}
-            />
-          </Route>
-          <Route path="/page1">
-            <Page1 />
-          </Route>
-          <Route path="/page2">
-            <Page2 />
-          </Route>
-        </Switch>
-      </Router>
-    );
-  }
+  return (
+    <MsalProvider instance={pca}>
+      <PageLayout>
+        <Grid container justify="center">
+          <Pages />
+        </Grid>
+      </PageLayout>
+    </MsalProvider>
+  );
+}
+
+function Pages() {
+  return (
+    <Switch>
+      <Route path="/profile">
+        <Profile />
+      </Route>
+      <Route path="/profileWithMsal">
+        <ProfileWithMsal />
+      </Route>
+      <Route path="/profileRawContext">
+        <ProfileRawContext />
+      </Route>
+      <Route path="/">
+        <Home />
+      </Route>
+    </Switch>
+  )
 }
 
 export default App;
