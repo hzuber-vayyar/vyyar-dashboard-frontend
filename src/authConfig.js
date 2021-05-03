@@ -13,8 +13,8 @@ import { LogLevel } from "@azure/msal-browser";
 export const msalConfig = {
     auth: {
         clientId: "117d060e-838b-48a7-ba14-103c8525be75", // This is the ONLY mandatory field that you need to supply.
-        authority: "https://login.microsoftonline.com/ed13fec6-3844-4a20-b4af-ca845e335ee6", // Defaults to "https://login.microsoftonline.com/common"
-        redirectUri: "http://localhost:3000", // Points to window.location.origin. You must register this URI on Azure Portal/App Registration.
+        authority: `https://login.microsoftonline.com/${process.env.REACT_APP_TENANT_ID}`, // Defaults to "https://login.microsoftonline.com/common"
+        redirectUri: process.env.NODE_ENV === "production" ? REACT_APP_REDIRECT_URL : "http://localhost:3000", // Points to window.location.origin. You must register this URI on Azure Portal/App Registration.
         postLogoutRedirectUri: "/", // Indicates the page to navigate after logout.
         navigateToLoginRequestUrl: true, // If "true", will navigate back to the original request location before processing the auth code response.
     },
@@ -73,6 +73,6 @@ export const protectedResources = {
     armTenants: {
         endpoint: "https://management.azure.com/tenants?api-version=2020-01-01",
         scopes: ["https://management.azure.com/user_impersonation"],
-        subscriptionEndpoint: "https://management.azure.com/subscriptions/f5741fa1-5cec-4b25-959a-f64fae4dd547/resourcegroups/Terraform/resources?api-version=2020-10-01"
+        subscriptionEndpoint: `https://management.azure.com/subscriptions/${process.env.REACT_APP_SUBSCRIPTION_ID}/resourceGroups?api-version=2021-01-01`
     }
 }

@@ -44,6 +44,7 @@ const TenantContent = () => {
     return (
         <>
             {/* { tenantData ? <TenantData tenantData={tenantData} /> : null } */}
+            <p dangerouslySetInnerHTML={{__html: JSON.stringify(tenantData)}}/>
         </>
     );
 };
