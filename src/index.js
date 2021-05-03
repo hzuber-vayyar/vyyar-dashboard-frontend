@@ -1,36 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from "react-router-dom";
-import { ThemeProvider } from '@material-ui/core/styles';
-import { theme } from "./styles/theme";
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
 
-// MSAL imports
-import { PublicClientApplication, EventType } from "@azure/msal-browser";
+import { PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from "./authConfig";
 
-export const msalInstance = new PublicClientApplication(msalConfig);
+import App from "./App.jsx";
 
-// Account selection logic is app dependent. Adjust as needed for different use cases.
-const accounts = msalInstance.getAllAccounts();
-if (accounts.length > 0) {
-  msalInstance.setActiveAccount(accounts[0]);
-}
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/index.css";
 
-msalInstance.addEventCallback((event) => {
-  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload.account) {
-    const account = event.payload.account;
-    msalInstance.setActiveAccount(account);
-  }
-});
+/**
+ * MSAL should be instantiated outside of the component tree to prevent it from being re-instantiated on re-renders. 
+ * For more, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/getting-started.md
+ */
+const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Router>
-            <ThemeProvider theme={theme}>
-                <App pca={msalInstance} />
-            </ThemeProvider>
-        </Router>
-    </React.StrictMode>,
-    document.getElementById('root')
+  <React.StrictMode>
+    <App instance={msalInstance} />
+  </React.StrictMode>,
+  document.getElementById('root')
 );

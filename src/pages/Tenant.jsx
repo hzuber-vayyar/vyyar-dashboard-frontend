@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
 import { MsalAuthenticationTemplate, useMsal, useAccount } from "@azure/msal-react";
-import { InteractionRequiredAuthError, InteractionType } from "@azure/msal-browser";
+import { InteractionRequiredAuthError, InteractionType, EventType } from "@azure/msal-browser";
 
 import { loginRequest, protectedResources } from "../authConfig";
 import { callApiWithToken } from "../fetch";
-import { ProfileData } from "../components/DataDisplay";
+import { TenantData } from "../components/DataDisplay";
 
-const ProfileContent = () => {
+const TenantContent = () => {
     /**
      * useMsal is hook that returns the PublicClientApplication instance, 
      * an array of all accounts currently signed in and an inProgress value 
@@ -16,25 +16,24 @@ const ProfileContent = () => {
      */
     const { instance, accounts, inProgress } = useMsal();
     const account = useAccount(accounts[0] || {});
-    const [graphData, setGraphData] = useState(null);
+    const [tenantData, setTenantData] = useState(null);
+
+    console.log("tenantData", tenantData)
 
     useEffect(() => {
-        if (account && inProgress === "none" && !graphData) {
+        if (account && inProgress === "none" && !tenantData) {
             instance.acquireTokenSilent({
-                scopes: protectedResources.graphMe.scopes,
+                scopes: protectedResources.armTenants.scopes,
                 account: account
             }).then((response) => {
-                callApiWithToken(response.accessToken, protectedResources.graphMe.endpoint)
-                    .then(response => setGraphData(response));
-            }).catch((error) => {
+                callApiWithToken(response.accessToken, protectedResources.armTenants.subscriptionEndpoint)
+                    .then(response => setTenantData(response));
+            }).catch(error => {
                 // in case if silent token acquisition fails, fallback to an interactive method
                 if (error instanceof InteractionRequiredAuthError) {
                     if (account && inProgress === "none") {
-                        instance.acquireTokenPopup({
-                            scopes: protectedResources.graphMe.scopes,
-                        }).then((response) => {
-                            callApiWithToken(response.accessToken, protectedResources.graphMe.endpoint)
-                                .then(response => setGraphData(response));
+                        instance.acquireTokenRedirect({
+                            scopes: protectedResources.armTenants.scopes,
                         }).catch(error => console.log(error));
                     }
                 }
@@ -44,7 +43,7 @@ const ProfileContent = () => {
   
     return (
         <>
-            { graphData ? <ProfileData graphData={graphData} /> : null }
+            {/* { tenantData ? <TenantData tenantData={tenantData} /> : null } */}
         </>
     );
 };
@@ -56,17 +55,17 @@ const ProfileContent = () => {
  * to be passed to the login API, a component to display while authentication is in progress or a component to display if an error occurs. For more, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/getting-started.md
  */
-export const Profile = () => {
+export const Tenant = () => {
     const authRequest = {
         ...loginRequest
     };
 
     return (
         <MsalAuthenticationTemplate 
-            interactionType={InteractionType.Popup} 
+            interactionType={InteractionType.Redirect} 
             authenticationRequest={authRequest}
         >
-            <ProfileContent />
+            <TenantContent />
         </MsalAuthenticationTemplate>
       )
 };
