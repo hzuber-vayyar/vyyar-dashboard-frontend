@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { MsalProvider } from "@azure/msal-react";
 
 import { PageLayout } from "./components/PageLayout";
-import { Tenant } from "./pages/Tenant";
+import { Subscription } from "./pages/Subscription";
 import { Profile } from "./pages/Profile";
 
 import "./styles/App.css";
@@ -14,8 +14,8 @@ const Pages = () => {
       <Route path="/profile">
         <Profile />
       </Route>
-      <Route path="/tenant">
-        <Tenant />
+      <Route path="/subscription">
+        <Subscription />
       </Route>
     </Switch>
   )
