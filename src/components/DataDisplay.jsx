@@ -1,4 +1,5 @@
 import "../styles/App.css";
+import { Link } from 'react-router-dom';
 
 export const ProfileData = (props) => {
   const tableRows = Object.entries(props.graphData).map((entry, index) => {
@@ -13,8 +14,8 @@ export const ProfileData = (props) => {
   });
 
   return (
-    <>
-      <div className="data-area-div">
+    <div className="data-area">
+      <div className="data-area--header">
         <p>
           Calling <strong>Microsoft Graph API</strong>...
         </p>
@@ -34,13 +35,13 @@ export const ProfileData = (props) => {
           Contents of the <strong>response</strong> is below:
         </p>
       </div>
-      <div className="data-area-div">
+      <div className="data-area--response">
         <table>
           <thead></thead>
           <tbody>{tableRows}</tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -51,7 +52,7 @@ export const SubscriptionData = (props) => {
     if (entry.name.includes("AzureMVP")) {
       rows.push(
         <div key={index} className="data-area--results--resource">
-            <h3 className="data-area--results--resource__name">{entry.name}</h3>
+            <h3 className="data-area--results--resource__name"><Link to={`/resourcegroup/${entry.name}`}>{entry.name}</Link></h3>
             <div className="data-area--results--resource__git">
                 <p className="data-area--results--resource__git__title">Git Hash:</p>
                 <p className="data-area--results--resource__git__hash">{entry.tags.git_hash ? entry.tags.git_hash : `No git hash found for this resource`}</p>
@@ -91,3 +92,11 @@ export const SubscriptionData = (props) => {
     </div>
   );
 };
+
+export const IotHubData = (props) => {
+  const data = JSON.stringify(props.iotHubData.value[0])
+  console.log(data)
+  return (
+    <div className="iot-hub">{data}</div>
+  )
+}

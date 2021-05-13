@@ -18,6 +18,7 @@ export const PageLayout = (props) => {
             {props.children}
             <br />
             <AuthenticatedTemplate>
+                <p>this area is authenticated</p>
                 <footer>
                     <center>How did we do? 
                         <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR73pcsbpbxNJuZCMKN0lURpUMlRHSkc5U1NLUkxFNEtVN0dEOTFNQkdTWiQlQCN0PWcu" target="_blank"> Share your experience!</a>
