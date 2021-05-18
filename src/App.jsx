@@ -6,6 +6,9 @@ import { PageLayout } from "./components/PageLayout";
 import { Subscription } from "./pages/Subscription";
 import { Profile } from "./pages/Profile";
 import { IotHub } from "./pages/IotHubs";
+import { Database } from "./pages/Database";
+import { Devices } from "./pages/Devices";
+import { ResourceGroup } from "./pages/ResourceGroup"
 
 import "./styles/App.css";
 
@@ -15,10 +18,16 @@ const Pages = () => {
       <Route path="/profile">
         <Profile />
       </Route>
-      <Route path="/subscription">
+      <Route exact path="/">
         <Subscription />
       </Route>
-      <Route path="/resourcegroup/:resourcegroupid">
+      <Route exact path="/resourcegroup/:resourcegroupid">
+        <ResourceGroup />
+      </Route>
+      <Route path="/resourcegroup/:resourcegroupid/database/:database">
+        <Database />
+      </Route>
+      <Route path="/resourcegroup/:resourcegroupid/iothub/:iothub">
         <IotHub />
       </Route>
     </Switch>

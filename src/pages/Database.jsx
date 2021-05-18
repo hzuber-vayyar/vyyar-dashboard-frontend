@@ -8,11 +8,11 @@ import { InteractionRequiredAuthError, InteractionType, EventType } from "@azure
 
 import { loginRequest, protectedResources } from "../authConfig";
 import { callApiWithToken } from "../fetch";
-import { IotHubData } from "../components/DataDisplay";
+import { DatabaseData } from "../components/DataDisplay";
 
 import "../styles/Subscription.scss"
 
-const IotHubContent = () => {
+const DatabaseContent = () => {
     const params = useParams()
     /**
      * useMsal is hook that returns the PublicClientApplication instance, 
@@ -22,17 +22,18 @@ const IotHubContent = () => {
      */
     const { instance, accounts, inProgress } = useMsal();
     const account = useAccount(accounts[0] || {});
-    const [iotHubData, setIotHubData] = useState(null);
-    const endpoint = protectedResources.armTenants.subscriptionEndpoint + "/" + params.resourcegroupid + "/providers/Microsoft.Devices/IotHubs/" + params.iothub + "?api-version=2018-04-01"
+    const [databaseData, setDatabaseData] = useState(null);
+    const endpoint = protectedResources.armTenants.subscriptionEndpoint + "/" + params.resourcegroupid + "/providers/Microsoft.DBForPostgreSQL/servers/" + params.database + "?api-version=2017-12-01"
+    console.log(endpoint)
 
     useEffect(() => {
-        if (account && inProgress === "none" && !iotHubData) {
+        if (account && inProgress === "none" && !databaseData) {
             instance.acquireTokenSilent({
                 scopes: protectedResources.armTenants.scopes,
                 account: account
             }).then((response) => {
                 callApiWithToken(response.accessToken, endpoint)
-                    .then(response => setIotHubData(response));
+                    .then(response => setDatabaseData(response));
             }).catch(error => {
                 // in case if silent token acquisition fails, fallback to an interactive method
                 if (error instanceof InteractionRequiredAuthError) {
@@ -48,7 +49,7 @@ const IotHubContent = () => {
   
     return (
         <>
-            { iotHubData ? <IotHubData iotHubData={iotHubData} endpoint={endpoint}/> : null }
+            { databaseData ? <DatabaseData databaseData={databaseData} endpoint={endpoint}/> : null }
         </>
     );
 };
@@ -60,7 +61,7 @@ const IotHubContent = () => {
  * to be passed to the login API, a component to display while authentication is in progress or a component to display if an error occurs. For more, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-react/docs/getting-started.md
  */
-export const IotHub = () => {
+export const Database = () => {
     const authRequest = {
         ...loginRequest
     };
@@ -70,7 +71,7 @@ export const IotHub = () => {
             interactionType={InteractionType.Redirect} 
             authenticationRequest={authRequest}
         >
-            <IotHubContent />
+            <DatabaseContent />
         </MsalAuthenticationTemplate>
       )
 };

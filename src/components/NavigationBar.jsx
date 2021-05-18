@@ -23,7 +23,6 @@ export const NavigationBar = () => {
                 <a className="navbar-brand" href="/">Microsoft identity platform</a>
                 <AuthenticatedTemplate>
                     <Nav.Link as={Button} href="/profile">Profile</Nav.Link>
-                    <Nav.Link as={Button} href="/subscription">Subscription</Nav.Link>
                     <DropdownButton variant="secondary" className="ml-auto" drop="left" title="Sign Out">
                         <Dropdown.Item as="button" onClick={() => instance.logoutPopup({ postLogoutRedirectUri: "/", mainWindowRedirectUri: "/" })}>Sign out using Popup</Dropdown.Item>
                         <Dropdown.Item as="button" onClick={() => instance.logoutRedirect({ postLogoutRedirectUri: "/" })}>Sign out using Redirect</Dropdown.Item>

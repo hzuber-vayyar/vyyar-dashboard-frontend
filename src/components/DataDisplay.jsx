@@ -94,9 +94,17 @@ export const SubscriptionData = (props) => {
 };
 
 export const IotHubData = (props) => {
-  const data = JSON.stringify(props.iotHubData.value[0])
-  console.log(data)
+  const data = JSON.stringify(props.iotHubData)
+  
   return (
     <div className="iot-hub">{data}</div>
+  )
+}
+
+export const DatabaseData = (props) => {
+  const data = JSON.stringify(props.databaseData)
+  
+  return (
+    <div className="database-page">{data}</div>
   )
 }
