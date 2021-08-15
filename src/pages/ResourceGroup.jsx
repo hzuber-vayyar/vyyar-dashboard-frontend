@@ -18,7 +18,6 @@ import "../styles/Subscription.scss";
 const ResourceGroupContent = () => {
   const params = useParams();
   const route = useRouteMatch();
-  console.log(route);
   /**
    * useMsal is hook that returns the PublicClientApplication instance,
    * an array of all accounts currently signed in and an inProgress value
@@ -159,20 +158,20 @@ const ResourceGroupContent = () => {
     });
 
   return (
-    <>
+    <div className="resource-group-page">
       {databaseContent && (
         <div className="database">
-          <h2>Database:</h2>
+          <h3>Database:</h3>
           {databaseContent}
         </div>
       )}
       {iotHubData && (
         <div className="iothub">
-          <h2>Iot Hub:</h2>
+          <h3>Iot Hub:</h3>
           {iotHubContent}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

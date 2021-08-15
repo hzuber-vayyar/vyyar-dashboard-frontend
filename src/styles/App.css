@@ -1,3 +1,7 @@
 .App {
   text-align: center;
 }
+.page-content{
+  padding: 10px 20px;
+  margin-top: 48px;
+}

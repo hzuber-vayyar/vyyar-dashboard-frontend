@@ -1,5 +1,5 @@
 import "../styles/App.css";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export const ProfileData = (props) => {
   const tableRows = Object.entries(props.graphData).map((entry, index) => {
@@ -52,11 +52,19 @@ export const SubscriptionData = (props) => {
     if (entry.name.includes("AzureMVP")) {
       rows.push(
         <div key={index} className="data-area--results--resource">
-            <h3 className="data-area--results--resource__name"><Link to={`/resourcegroup/${entry.name}`}>{entry.name}</Link></h3>
-            <div className="data-area--results--resource__git">
-                <p className="data-area--results--resource__git__title">Git Hash:</p>
-                <p className="data-area--results--resource__git__hash">{entry.tags.git_hash ? entry.tags.git_hash : `No git hash found for this resource`}</p>
-            </div>
+          <h5 className="data-area--results--resource__name">
+            <Link to={`/resourcegroup/${entry.name}`}>{entry.name}</Link>
+          </h5>
+          <div className="data-area--results--resource__git">
+            <p className="data-area--results--resource__git__title">
+              Git Hash:
+            </p>
+            <p className="data-area--results--resource__git__hash">
+              {entry.tags.git_hash
+                ? entry.tags.git_hash
+                : `No git hash found for this resource`}
+            </p>
+          </div>
         </div>
       );
     }
@@ -74,10 +82,7 @@ export const SubscriptionData = (props) => {
             <strong>resource:</strong> <mark>Subscription</mark> object
           </li>
           <li>
-            <strong>endpoint:</strong>{" "}
-            <mark>
-              {props.endpoint}
-            </mark>
+            <strong>endpoint:</strong> <mark>{props.endpoint}</mark>
           </li>
           <li>
             <strong>scope:</strong>{" "}
@@ -94,17 +99,27 @@ export const SubscriptionData = (props) => {
 };
 
 export const IotHubData = (props) => {
-  const data = JSON.stringify(props.iotHubData)
-  
+  const data = JSON.stringify(props.iotHubData);
+
   return (
-    <div className="iot-hub">{data}</div>
-  )
-}
+    <div className="iot-hub-page">
+      <p>
+        <strong>endpoint:</strong> <mark>{props.endpoint}</mark>
+      </p>
+      <p>{data}</p>
+    </div>
+  );
+};
 
 export const DatabaseData = (props) => {
-  const data = JSON.stringify(props.databaseData)
-  
+  const data = JSON.stringify(props.databaseData);
+
   return (
-    <div className="database-page">{data}</div>
-  )
-}
+    <div className="database-page">
+      <p>
+        <strong>endpoint:</strong> <mark>{props.endpoint}</mark>
+      </p>
+      <p>{data}</p>
+    </div>
+  );
+};

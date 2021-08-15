@@ -16,15 +16,9 @@
     text-align: left;
     margin: 5px 20px;
     &--resource{
-        &__name{
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
         &__git{
             display: flex;
             &__title{
-                font-size: 1rem;
-                font-weight: 600;
                 margin-right: 10px;
             }
         }
